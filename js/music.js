@@ -550,7 +550,9 @@ function updateListenStatsModal() {
 }
 
 function formatNumberStat(num) {
-    return num.toLocaleString('en-US');
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+    return num.toString();
 }
 
 function escapeHtmlStat(str) {
@@ -1217,14 +1219,20 @@ if (shuffleBtn) {
 }
 
 if (repeatBtn) {
+    const repeatIcon = repeatBtn.querySelector('i');
+    
     repeatBtn.onclick = function() {
         isRepeatOne = !isRepeatOne;
-        this.classList.toggle('active', isRepeatOne);
         isLoopingHandled = false;
+        
         if (isRepeatOne) {
-            showNotification('LẶP LẠI:', 'LẶP LẠI 1 BÀI', 'var(--accent-color)', 'fa-arrow-rotate-left');
+            this.classList.add('active');
+            if (repeatIcon) repeatIcon.className = 'fas fa-repeat-1';
+            showNotification('LẶP LẠI:', 'LẶP LẠI 1 BÀI', 'var(--accent-color)', 'fa-repeat-1');
         } else {
-            showNotification('TẮT LẶP:', 'ĐÃ TẮT LẶP', 'var(--accent-color)', 'fa-arrow-rotate-left');
+            this.classList.remove('active');
+            if (repeatIcon) repeatIcon.className = 'fas fa-repeat';
+            showNotification('TẮT LẶP:', 'ĐÃ TẮT LẶP', 'var(--accent-color)', 'fa-repeat');
         }
     };
 }
