@@ -6,16 +6,20 @@
     --border-color: #f0f0f0;
     --card-bg: rgba(255, 255, 255, 0.95);
     --text-primary: #000000;
-    --text-secondary: #888888;
+    --text-secondary: #333333;
     --text-tertiary: #555555;
     --progress-bg: rgba(0, 0, 0, 0.08);
-    --btn-bg: rgba(255, 255, 255, 0.8);
+    --btn-bg: rgba(0, 0, 0, 0.05);
+    --btn-active-bg: rgba(0, 0, 0, 0.12);
     --btn-hover: rgba(0, 0, 0, 0.08);
     --playlist-bg: rgba(255, 255, 255, 1);
     --playlist-header-bg: rgba(255, 255, 255, 0.98);
     --song-item-hover: rgba(0, 0, 0, 0.04);
     --input-bg: #fafafa;
     --modal-bg: rgba(255, 255, 255, 0.98);
+    --icon-gradient: linear-gradient(135deg, #ff0040, #8c00ff, #ff0040);
+    --icon-gradient-hover: linear-gradient(135deg, #ff6b6b, #c2185b, #ff6b6b);
+    --icon-gradient-active: linear-gradient(135deg, #ff0040, #ffd700, #ff0040);
 }
 
 body.dark {
@@ -24,16 +28,20 @@ body.dark {
     --border-color: #2a2a2a;
     --card-bg: rgba(30, 30, 35, 0.95);
     --text-primary: #ffffff;
-    --text-secondary: #aaaaaa;
+    --text-secondary: #cccccc;
     --text-tertiary: #999999;
     --progress-bg: rgba(255, 255, 255, 0.12);
-    --btn-bg: rgba(40, 40, 45, 0.8);
-    --btn-hover: rgba(255, 255, 255, 0.08);
+    --btn-bg: rgba(255, 255, 255, 0.08);
+    --btn-active-bg: rgba(255, 255, 255, 0.18);
+    --btn-hover: rgba(255, 255, 255, 0.05);
     --playlist-bg: rgba(25, 25, 30, 1);
     --playlist-header-bg: rgba(25, 25, 30, 0.98);
     --song-item-hover: rgba(255, 255, 255, 0.05);
     --input-bg: #2a2a2a;
     --modal-bg: rgba(30, 30, 35, 0.98);
+    --icon-gradient: linear-gradient(135deg, #ffd89b, #c7e9fb, #ffd89b);
+    --icon-gradient-hover: linear-gradient(135deg, #fbc2eb, #a6c1ee, #fbc2eb);
+    --icon-gradient-active: linear-gradient(135deg, #ffd89b, #ff6b6b, #ffd89b);
 }
 
 * {
@@ -141,7 +149,6 @@ body.dark .player-container {
 .btn-icon {
     font-size: 1.2rem;
     cursor: pointer;
-    color: var(--text-secondary);
     width: 42px;
     height: 42px;
     display: flex;
@@ -155,6 +162,51 @@ body.dark .player-container {
     backdrop-filter: blur(4px);
 }
 
+.btn-icon i,
+.play-btn i,
+#repeat-btn i {
+    background: var(--icon-gradient);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientShift 3s ease infinite;
+    font-size: 1.2rem;
+}
+
+.play-btn i {
+    font-size: 1.4rem;
+}
+
+.btn-icon:hover i,
+.play-btn:hover i,
+#repeat-btn:hover i {
+    background: var(--icon-gradient-hover);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientShift 0.8s ease infinite;
+}
+
+.btn-icon.active i,
+.play-btn.playing i,
+#repeat-btn.active i {
+    background: var(--icon-gradient-active);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    animation: gradientShift 1s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 .btn-icon::before {
     content: '';
     position: absolute;
@@ -166,6 +218,7 @@ body.dark .player-container {
     background: var(--btn-hover);
     transform: translate(-50%, -50%);
     transition: width 0.4s, height 0.4s;
+    z-index: -1;
 }
 
 .btn-icon:active::before {
@@ -175,77 +228,47 @@ body.dark .player-container {
 
 .btn-icon:hover {
     transform: scale(1.08);
-    background: rgba(255, 255, 255, 0.95);
-    color: var(--text-primary);
-}
-
-body.dark .btn-icon:hover {
-    background: rgba(60, 60, 65, 0.95);
+    background: var(--btn-active-bg);
 }
 
 .btn-icon:active {
     transform: scale(0.92);
 }
 
-.btn-icon.active {
-    color: #000;
-    background: rgba(0, 0, 0, 0.08);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-body.dark .btn-icon.active {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.15);
-}
-
 .play-btn {
-    background: #000;
-    color: #fff !important;
+    background: var(--btn-bg);
     width: 55px;
     height: 55px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-body.dark .play-btn {
-    background: #fff;
-    color: #000 !important;
 }
 
 .play-btn:hover {
     transform: scale(1.08);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    background: #1a1a1a;
-}
-
-body.dark .play-btn:hover {
-    background: #e0e0e0;
+    background: var(--btn-active-bg);
 }
 
 .play-btn:active {
     transform: scale(0.95);
 }
 
-.top-right-action .btn-icon,
-.top-left-action .btn-icon {
-    background: rgba(0, 0, 0, 0.03);
-    backdrop-filter: blur(4px);
+#repeat-btn {
+    background: var(--btn-bg);
 }
 
-body.dark .top-right-action .btn-icon,
-body.dark .top-left-action .btn-icon {
-    background: rgba(255, 255, 255, 0.05);
+#repeat-btn:hover {
+    background: var(--btn-active-bg);
+}
+
+.top-right-action .btn-icon,
+.top-left-action .btn-icon {
+    background: var(--btn-bg);
+    backdrop-filter: blur(4px);
 }
 
 .top-right-action .btn-icon:hover,
 .top-left-action .btn-icon:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--btn-active-bg);
     transform: rotate(5deg) scale(1.05);
-}
-
-body.dark .top-right-action .btn-icon:hover,
-body.dark .top-left-action .btn-icon:hover {
-    background: rgba(255, 255, 255, 0.12);
 }
 
 .top-right-action .btn-icon:active,
@@ -872,16 +895,15 @@ body.dark .song-item.active {
 }
 
 #open-timer-btn.active {
-    background: var(--accent-color) !important;
-    color: var(--bg-color) !important;
+    background: var(--btn-active-bg);
+    color: var(--accent-color) !important;
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     animation: pulse 1.5s infinite;
 }
 
 @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2); }
-    50% { box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1); }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
 }
 
 .listen-badge {
