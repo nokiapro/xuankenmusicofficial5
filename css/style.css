@@ -829,8 +829,8 @@ body.dark .song-item.active {
 }
 
 .timer-start-btn {
-    background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
-    color: var(--bg-color);
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: #ef4444 !important;
     font-weight: bold;
     padding: 14px;
     border-radius: 60px;
